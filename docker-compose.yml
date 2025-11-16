@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/ezy
+      POSTGRES_USER: ${POSTGRES_USER:-system_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-#system@user}
+      POSTGRES_DB: ${POSTGRES_DB:-ezy}
+      SPRING_PROFILES_ACTIVE: local
+      AWS_ENDPOINT_URL: http://127.0.0.1:4566
+    ports:
+      - "8080:8080"
+    restart: on-failure:5
+    depends_on:
+      - localstack
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-system_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-#system@user}
+      POSTGRES_DB: ${POSTGRES_DB:-ezy}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+      - ./docker/postgres/postgres.sql:/docker-entrypoint-initdb.d/postgres.sql
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+  localstack:
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=sqs,sns
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DISABLE_CORS_CHECKS=1
+      # - DEBUG=1
+      - AWS_ACCESS_KEY_ID=fakeAccessKeyId
+      - AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey
+      - AWS_DEFAULT_REGION=sa-east-1
+      - AWS_DEFAULT_OUTPUT=json
+      - APP_PATH=$PWD
+    ports:
+      - '127.0.0.1:4566:4566'
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - './docker/localstack/localstack_setup.sh:/etc/localstack/init/ready.d/init-aws.sh'
+
+volumes:
+  postgres:

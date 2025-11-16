@@ -1,0 +1,62 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+
+spring:
+  datasource:
+    read-write: 
+       url: ${POSTGRES_URL:jdbc:postgresql://127.0.0.1:5432/ezy} 
+       username: ${POSTGRES_USER:system_user} 
+       password: ${POSTGRES_PASSWORD:#system@user}
+       hikari: 
+         schema: ${POSTGRES_SCHEMA:ezy}
+         pool-name: ReadWriteHikariPool
+  cache-duration: 120
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-version: 0
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    request-interceptor: INFO
+#    org.hibernate.SQL: debug
+#    org.hibernate.type.descriptor.sql: trace
+#    org.springframework.security.oauth2.server.resource: DEBUG
+#    org.springframework.security.web.access.intercept: DEBUG
+#    org.springframework.boot.availability.ApplicationAvailabilityBean: DEBUG
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: sa-east-1
+      auto: false
+    credentials:
+      access-key: localstack
+      secret-key: localstack
+    localstack:
+      uri: http://localstack:4566
+    sqs:
+      queues:
+        payment-notification: ${AWS_SQS_QUEUES_PAYMENT_NOTIFICATION:payment-notification}
+        payment-notification-queue-type: ${AWS_SQS_QUEUES_PAYMENT_NOTIFICATION_QUEUE_TYPE:STANDARD}
+
+fpe:
+  key: ${FPE1_KEY:uului7xfCSqMkhEsxhKoqmeE1vvD1Kpd}
+  tweak: ${FPE1_TWEAK:7811BD76619EDB78}
+  radix: 10

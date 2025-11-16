@@ -1,0 +1,111 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /ezy-collect
+  error:
+    include-message: always
+    include-binding-errors: always
+    whitelabel:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: loggers, health, info, env
+  endpoint:
+    health:
+      show-details: always
+  health:
+    check-source-api:
+      enabled: true
+  security:
+    enabled: false
+
+service:
+  name: ezyCollect
+
+spring:
+  datasource:
+    platform: postgres
+    read-write:
+       url: ${POSTGRES_URL}
+       username: ${POSTGRES_USER}
+       password: ${POSTGRES_PASSWORD}
+       hikari:
+         schema: ${POSTGRES_SCHEMA}
+         driver: org.postgresql.Driver
+         pool-name: ReadWriteHikariPool
+         minimum-idle: 10
+         maximum-pool-size: ${POSTGRES_POOL_SIZE:20}
+         idle-timeout: ${POSTGRES_POOL_IDLETIMEOUT:5000}
+         max-lifetime: ${POSTGRES_POOL_MAX_LIFETIME:1000}
+         is-read-only: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: ${POSTGRES_SCHEMA}
+      org:
+        hibernate:
+          envers:
+            audit_table_suffix: _AUDIT
+            revision_field_name: REVISION_ID
+            revision_type_field_name: REVISION_TYPE
+  database:
+    driveClassName: org.postgresql.Driver
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+  flyway:
+    enabled: false
+    baseline-on-migrate: true
+    baseline-version: 1      
+  cache-duration: 120
+
+  mvc:
+    throw-exception-if-no-handler-found: false
+  web:
+    resources:
+      add-mappings: false
+  webclient:
+    buffer-size-MB: 16
+    default-response-timeout-ss: 10    
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security.web.access.intercept.FilterSecurityInterceptor: INFO
+    org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider: INFO
+    org.springframework.boot.availability.ApplicationAvailabilityBean: INFO
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ${AWS_REGION}
+      auto: false
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    sqs:
+      queues:
+        payment-notification: ${AWS_SQS_QUEUES_PAYMENT_NOTIFICATION:payment-notification}
+        payment-notification-queue-type: ${AWS_SQS_QUEUES_PAYMENT_NOTIFICATION_QUEUE_TYPE:STANDARD}        
+        
+fpe:
+    key: ${FPE1_KEY}
+    tweak: ${FPE1_TWEAK}
+    radix: 10
+
