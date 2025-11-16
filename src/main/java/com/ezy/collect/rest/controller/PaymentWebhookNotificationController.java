@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ezy.collect.config.AppConfig;
 import com.ezy.collect.domain.service.PaymentWebhookNotificationService;
 import com.ezy.collect.rest.controller.doc.PaymentWebhookNotificationControllerDocumentation;
-import com.ezy.collect.rest.domain.request.PaymentWebhookRequestDto;
+import com.ezy.collect.rest.domain.request.WebhookNotificationRequestDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class PaymentWebhookNotificationController implements PaymentWebhookNotif
 	private final PaymentWebhookNotificationService notificationService;
 
     @PostMapping()
-    public ResponseEntity<Void> registerNewWebhookUrl(@RequestBody @Valid PaymentWebhookRequestDto webhookRequest) {
+    public ResponseEntity<Void> registerNewWebhookUrl(@RequestBody @Valid WebhookNotificationRequestDto webhookRequest) {
         try {
             StopWatch stopWatch = StopWatch.createStarted();
             

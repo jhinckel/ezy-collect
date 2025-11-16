@@ -37,7 +37,6 @@ public class WebClientConfig {
 				.evictInBackground(Duration.ofSeconds(120)).build();
 	}
 
-
 	@Bean("webhookWebClient")
 	public WebClient webhookWebClient() {
 	    ReactorClientHttpConnector httpClientConnector = getHttpClientConnector(WebhookAdapter.class);

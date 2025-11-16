@@ -14,6 +14,7 @@ import com.ezy.collect.rest.domain.mapper.PaymentWebhookMapper;
 import com.ezy.collect.rest.domain.request.PaymentDto;
 import com.ezy.collect.rest.domain.request.PaymentWebhookNotificationDto;
 import com.ezy.collect.rest.domain.request.PaymentWebhookRequestDto;
+import com.ezy.collect.rest.domain.request.WebhookNotificationRequestDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class PaymentWebhookNotificationService {
     private final PaymentWebhookRepository paymentWebhookRepository;
     private final PaymentWebhookQueueProducer paymentWebhookQueueProducer;
 
-	public void addPaymentNotificationUrl(PaymentWebhookRequestDto webhookRequest) {
+	public void addPaymentNotificationUrl(WebhookNotificationRequestDto webhookRequest) {
 		PaymentWebhook paymentWebhook = paymentWebhookMapper.toEntity(webhookRequest);
 		
 		paymentWebhookRepository.save(paymentWebhook);

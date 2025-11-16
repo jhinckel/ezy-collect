@@ -8,12 +8,13 @@ import org.mapstruct.ReportingPolicy;
 import com.ezy.collect.domain.model.PaymentWebhook;
 import com.ezy.collect.rest.domain.request.PaymentDto;
 import com.ezy.collect.rest.domain.request.PaymentWebhookRequestDto;
+import com.ezy.collect.rest.domain.request.WebhookNotificationRequestDto;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentWebhookMapper {
 	
     @Mapping(source = "url", target = "notificationUrl")
-	PaymentWebhook toEntity(PaymentWebhookRequestDto webhookRequest);
+	PaymentWebhook toEntity(WebhookNotificationRequestDto webhookRequest);
 	
     @Mapping(source = "paymentRequest.firstName", target = "payment.firstName")
     @Mapping(source = "paymentRequest.lastName", target = "payment.lastName")
