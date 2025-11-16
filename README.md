@@ -11,8 +11,8 @@
 
 ## Download and start the project
 
-git clone https://github.com/jhinckel/.git  
-cd   
+git clone https://github.com/jhinckel/ezy-collect.git  
+cd ezy-collect  
 sudo service docker start  
 docker compose up app  
 
