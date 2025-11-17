@@ -1,5 +1,8 @@
 # EzyCollect - Test
 
+## Description
+The system is responsible for registering payments and sending notifications to the defined URLs. When a new payment arrives, the system looks through the list of URLs and sends the webhook. If the webhook delivery fails, the URL and payment payload are placed in a queue. The system then processes this queue and continues attempting to send the webhook. The card number stored in the database is encrypted with FPE1 algorithm.
+
 ## Stack
 - Java SE 21
 - Postgres
